@@ -10,6 +10,7 @@ public class Walk : States
 
     public Walk(GameObject entity) : base(entity)
     {
+        Initialize();
     }
 
     void Initialize()
@@ -27,7 +28,7 @@ public class Walk : States
 
     public override void toDo()
     {
-        _myEntity.transform.position += Vector3.Lerp(p_myOrigin, p_myDestination, p_myWalkSpeed);
+        _myEntity.transform.position = Vector3.Lerp(_myEntity.transform.position, p_myDestination, p_myWalkSpeed);
         float distance = Vector3.Distance(_myEntity.transform.position, p_myDestination);
         if (distance <= p_myDistanceErrorWalk)
         {

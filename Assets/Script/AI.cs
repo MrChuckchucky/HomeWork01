@@ -151,6 +151,7 @@ public class AI : MonoBehaviour
     {
         Walk walk = new Walk(this.gameObject);
         TestItem testItem = new TestItem(this.gameObject);
+        Analyze analyze = new Analyze(this.gameObject);
 
         p_myStateMachine = new StateMachine(this.gameObject, walk);
 
@@ -158,18 +159,32 @@ public class AI : MonoBehaviour
         List<Transitions> transitions = new List<Transitions>();
         List<Conditions> conditions = new List<Conditions>();
         ActionEnded condition = new ActionEnded(this.gameObject);
-        SomethingBehind condition2 = new SomethingBehind(this.gameObject);
         conditions.Add(condition);
-        conditions.Add(condition2);
-        Transitions transition = new Transitions(testItem, p_myStateMachine, conditions);
+        Transitions transition = new Transitions(analyze, p_myStateMachine, conditions);
+        transitions.Add(transition);
         walk.setTransitions(transitions);
 
-        //TestItem Transtions
+        //Analyze Transitions
+        transitions = new List<Transitions>();
+        conditions = new List<Conditions>();
+        SomethingBehind condition2 = new SomethingBehind(this.gameObject);
+        conditions.Add(condition2);
+        transition = new Transitions(testItem, p_myStateMachine, conditions);
+        transitions.Add(transition);
+        conditions = new List<Conditions>();
+        condition = new ActionEnded(this.gameObject);
+        conditions.Add(condition);
+        transition = new Transitions(walk, p_myStateMachine, conditions);
+        transitions.Add(transition);
+        analyze.setTransitions(transitions);
+
+        //TestItem Transitions
         transitions = new List<Transitions>();
         conditions = new List<Conditions>();
         condition = new ActionEnded(this.gameObject);
         conditions.Add(condition);
         transition = new Transitions(walk, p_myStateMachine, conditions);
+        transitions.Add(transition);
         testItem.setTransitions(transitions);
     }
 
