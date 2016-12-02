@@ -14,7 +14,7 @@ public class Pickup
 
 public class Item : MonoBehaviour
 {
-    public PlaceurTimer placed;
+    public Placeur placeur;
     
     public enum Effect
     {
@@ -27,18 +27,6 @@ public class Item : MonoBehaviour
     [Range(0, 1)]
     public float deathPercent;
     public int bonus;
-
-    // Use this for initialization
-    void Start ()
-    {
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-	}
 
     public Pickup Use()
     {
@@ -67,11 +55,15 @@ public class Item : MonoBehaviour
             default:
                 break;
         }
-        if (placed)
-        {
-            placed.IsFlowing = true;
-            placed.GetComponent<Placeur>().ResetItem();
-        }
+        DestroyItem();
         return pickup;
+    }
+
+    public void DestroyItem()
+    {
+        if (placeur)
+        {
+            placeur.ResetItem();
+        }
     }
 }

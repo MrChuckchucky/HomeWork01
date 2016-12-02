@@ -3,7 +3,8 @@ using System.Collections;
 
 public class PlaceurTimer : MonoBehaviour {
 
-    Placeur placeur;
+    [HideInInspector]
+    public Placeur placeur;
     float currentTime;
     public float CurrentTime
     {

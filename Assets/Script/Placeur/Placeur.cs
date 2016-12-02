@@ -39,6 +39,7 @@ public class Placeur : MonoBehaviour {
         {
             Destroy(currentItem);
             currentItem = null;
+            timer.IsFlowing = true;
             setDirtyItem = false;
         }
 
@@ -56,18 +57,12 @@ public class Placeur : MonoBehaviour {
                     GameObject prefab = itemsAvailable[inputs.IndexOf(input)];
                     currentItem = Instantiate(prefab, enemy ? enemy.transform.position + enemy.transform.forward * 3 : Vector3.zero, prefab.transform.rotation) as GameObject;
                     currentItem.name = prefab.name;
-                    currentItem.GetComponent<Item>().placed = timer;
+                    currentItem.GetComponent<Item>().placeur = this;
                     placeItem = false;
                 }
             }
         }
-
-        if (Input.GetMouseButtonDown(0) && currentItem)
-        {
-            Pickup pick = currentItem.GetComponent<Item>().Use();
-            Debug.Log(pick);
-        }
-	}
+    }
 
     public void ResetItem()
     {
