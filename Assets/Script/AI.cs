@@ -9,6 +9,7 @@ public class AI : MonoBehaviour
     List<string> p_myNewWords;
     List<string> p_myDangers;
     List<string> p_mySafety;
+    List<Chest> p_myChests;
 
     GameObject p_myItemInFront;
 
@@ -55,6 +56,14 @@ public class AI : MonoBehaviour
         }
     }
 
+    public void addChest(string chest)
+    {
+        if (!isKnownChest(chest))
+        {
+            p_myChests.Add(chest);
+        }
+    }
+
     public void setItemInFront(GameObject item)
     {
         p_myItemInFront = item;
@@ -74,6 +83,26 @@ public class AI : MonoBehaviour
         else
         {
             p_myRewards += reward;
+        }
+    }
+
+    public void setChestUsed(string name, bool isLethal, int reward)
+    {
+        foreach (Chest c in p_myChests)
+        {
+            if (c.getName() == name)
+            {
+                if (isLethal)
+                {
+                    c.addDefeat();
+                    reset();
+                }
+                else
+                {
+                    c.addVictory();
+                    p_myRewards += reward;
+                }
+            }
         }
     }
 
@@ -99,12 +128,17 @@ public class AI : MonoBehaviour
 
     public bool isDangers(string danger)
     {
-        return p_myDangers.Contains(name);
+        return p_myDangers.Contains(danger);
     }
 
     public bool isSafety(string safe)
     {
-        return p_mySafety.Contains(name);
+        return p_mySafety.Contains(safe);
+    }
+
+    public bool isKnownChest(string chest)
+    {
+        return p_myChests.Contains(chest);
     }
 
     public bool getIsDoingSomething()
@@ -130,6 +164,18 @@ public class AI : MonoBehaviour
     public string getNextState()
     {
         return p_myNextState;
+    }
+
+    public Chest getChest(string chest)
+    {
+        foreach (Chest c in p_myChests)
+        {
+            if (c.getName() == chest)
+            {
+                return c;
+            }
+        }
+        return null;
     }
     #endregion
 
@@ -192,6 +238,8 @@ public class AI : MonoBehaviour
     {
         p_myRewards = 0;
         transform.position = p_myOrigin;
+        setIsDoingSomething(false);
+        setItemInFront(null);
         InitIA();
     }
 }
