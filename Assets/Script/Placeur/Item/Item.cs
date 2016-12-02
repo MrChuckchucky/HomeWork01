@@ -4,11 +4,11 @@ using System.Collections;
 public class Pickup
 {
     public bool dead;
-    public int bonus;
+    public int reward;
 
     public override string ToString()
     {
-        return "This item is " + (dead ? "deadly" : "safe and the bonus given is " + bonus);
+        return "This item is " + (dead ? "deadly" : "safe and the reward given is " + reward);
     }
 }
 
@@ -46,11 +46,11 @@ public class Item : MonoBehaviour
                 }
             case Effect.GOOD:
                 pickup.dead = false;
-                pickup.bonus = bonus;
+                pickup.reward = bonus;
                 break;
             case Effect.BAD:
                 pickup.dead = true;
-                pickup.bonus = 0;
+                pickup.reward = 0;
                 break;
             default:
                 break;

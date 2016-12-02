@@ -3,7 +3,7 @@
 public class TestItem : States
 {
     GameObject p_myObjToTest;
-    PickUp p_myPickUp;
+    Pickup p_myPickUp;
 
     public TestItem(GameObject entity) : base(entity)
     {
@@ -11,54 +11,55 @@ public class TestItem : States
 
     public override void doOnce()
     {
-        p_myObjToTest = _myAI.getItemInFront();
-        if (!_myAI.isNewWords(p_myObjToTest.name) || !p_myObjToTest.Contains("Coffre"))
+        p_myObjToTest = _myAi.getItemInFront();
+        if (!_myAi.isNewWords(p_myObjToTest.name) || !p_myObjToTest.name.Contains("Coffre"))
         {
-            if (_myAI.isDangers(p_myObjToTest.name))
+            if (_myAi.isDangers(p_myObjToTest.name))
             {
+                p_myObjToTest.GetComponent<Item>().DestroyItem();
                 return;
             }
-            if (_myAI.isSafety(p_myObjToTest.name))
+            if (_myAi.isSafety(p_myObjToTest.name))
             {
                 p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
-                _myAI.setItemUsed(p_myPickUp.dead, p_myPickUp.bonus);
+                _myAi.setItemUsed(p_myPickUp.dead, p_myPickUp.reward);
                 return;
             }
             Debug.LogError("There is a bug");
         }
-        else if (p_myObjToTest.Contains("Coffre"))
+        else if (p_myObjToTest.name.Contains("Coffre"))
         {
-            if (_myAI.isKnownChest(p_myObjToTest.name))
+            if (_myAi.isKnownChest(p_myObjToTest.name))
             {
-                Chest chest = _myAI.getChest();
+                Chest chest = _myAi.getChest(p_myObjToTest.name);
                 float rand = Random.Range(0.0f, 1.0f);
                 if (rand < chest.getChance())
                 {
-                    _myAI.setChestUsed(chest.getName(), p_myPickUp.dead, p_myPickUp.reward);
+                    _myAi.setChestUsed(chest.getName(), p_myPickUp.dead, p_myPickUp.reward);
                 }
                 return;
             }
             else
             {
-                _myAI.addChest(p_myObjToTest.name);
+                _myAi.addChest(p_myObjToTest.name);
                 p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
-                _myAI.setChestUsed(p_myObjToTest.name, p_myPickUp.dead, p_myPickUp.reward);
+                _myAi.setChestUsed(p_myObjToTest.name, p_myPickUp.dead, p_myPickUp.reward);
             }
         }
         else
         {
-            _myAI.addNewWords(p_myPickUp.name);
+            _myAi.addNewWords(p_myObjToTest.name);
             if (p_myPickUp.dead)
             {
-                _myAI.addDanger(p_myPickUp.name);
+                _myAi.addDanger(p_myObjToTest.name);
             }
             else
             {
-                _myAI.addSafe(p_myPickUp.name);
+                _myAi.addSafe(p_myObjToTest.name);
             }
         }
         p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
-        _myAI.setItemUsed(p_myPickUp.dead, p_myPickUp.bonus);
+        _myAi.setItemUsed(p_myPickUp.dead, p_myPickUp.reward);
     }
 
     public override void toDo()

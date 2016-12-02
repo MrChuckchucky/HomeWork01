@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class AI : MonoBehaviour
 {
@@ -60,7 +61,7 @@ public class AI : MonoBehaviour
     {
         if (!isKnownChest(chest))
         {
-            p_myChests.Add(chest);
+            p_myChests.Add(new Chest(chest));
         }
     }
 
@@ -138,7 +139,7 @@ public class AI : MonoBehaviour
 
     public bool isKnownChest(string chest)
     {
-        return p_myChests.Contains(chest);
+        return p_myChests.Where(p => p.name.Contains(chest)).Count() > 0;
     }
 
     public bool getIsDoingSomething()
