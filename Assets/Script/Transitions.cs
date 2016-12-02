@@ -16,16 +16,17 @@ public class Transitions
         p_myConditions = conditions;
     }
 
-    public void CheckConditions()
+    public bool CheckConditions()
     {
         foreach (Conditions c in p_myConditions)
         {
             if (!c.Check())
             {
-                return;
+                return false;
             }
         }
         ChangeState();
+        return true;
     }
 
     public void ChangeState()

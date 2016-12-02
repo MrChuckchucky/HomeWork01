@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections.Generic;
 
 public class StateMachine : States
 {
@@ -40,7 +39,10 @@ public class StateMachine : States
     {
         foreach (Transitions t in p_myCurrentState.getTransitions())
         {
-            t.CheckConditions();
+            if (t.CheckConditions())
+            {
+                return;
+            }
         }
     }
 }
