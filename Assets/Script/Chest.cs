@@ -31,6 +31,6 @@ public class Chest : MonoBehaviour
 
     public float getChance()
     {
-        return p_myVictory / (p_myVictory + p_myDefeat);
+        return p_myVictory / (float)(p_myVictory + p_myDefeat);
     }
 }

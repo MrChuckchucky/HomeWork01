@@ -18,6 +18,7 @@ public class AI : MonoBehaviour
 
     Vector3 p_myOrigin;
 
+    [SerializeField]
     int p_myRewards;
 
     bool p_myIsDoingSomething;
@@ -61,7 +62,9 @@ public class AI : MonoBehaviour
     {
         if (!isKnownChest(chest))
         {
-            p_myChests.Add(new Chest(chest));
+            Chest c = new Chest(chest);
+            p_myChests.Add(c);
+            c.addVictory();
         }
     }
 
@@ -139,7 +142,19 @@ public class AI : MonoBehaviour
 
     public bool isKnownChest(string chest)
     {
-        return p_myChests.Where(p => p.name.Contains(chest)).Count() > 0;
+        foreach (var c in p_myChests)
+        {
+            if (c.getName().Contains(chest))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getReward()
+    {
+        return p_myRewards;
     }
 
     public bool getIsDoingSomething()
@@ -183,6 +198,7 @@ public class AI : MonoBehaviour
     void Start()
     {
         p_myOrigin = transform.position;
+        p_myChests = new List<Chest>();
         p_myNewWords = new List<string>();
         p_myDangers = new List<string>();
         p_mySafety = new List<string>();

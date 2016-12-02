@@ -12,7 +12,7 @@ public class TestItem : States
     public override void doOnce()
     {
         p_myObjToTest = _myAi.getItemInFront();
-        if (!_myAi.isNewWords(p_myObjToTest.name) || !p_myObjToTest.name.Contains("Coffre"))
+        if (_myAi.isNewWords(p_myObjToTest.name) && !p_myObjToTest.name.Contains("Coffre"))
         {
             if (_myAi.isDangers(p_myObjToTest.name))
             {
@@ -32,8 +32,9 @@ public class TestItem : States
             if (_myAi.isKnownChest(p_myObjToTest.name))
             {
                 Chest chest = _myAi.getChest(p_myObjToTest.name);
+                p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
                 float rand = Random.Range(0.0f, 1.0f);
-                if (rand < chest.getChance())
+                if (rand <= chest.getChance())
                 {
                     _myAi.setChestUsed(chest.getName(), p_myPickUp.dead, p_myPickUp.reward);
                 }
@@ -48,6 +49,7 @@ public class TestItem : States
         }
         else
         {
+            p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
             _myAi.addNewWords(p_myObjToTest.name);
             if (p_myPickUp.dead)
             {
@@ -58,7 +60,6 @@ public class TestItem : States
                 _myAi.addSafe(p_myObjToTest.name);
             }
         }
-        p_myPickUp = p_myObjToTest.GetComponent<Item>().Use();
         _myAi.setItemUsed(p_myPickUp.dead, p_myPickUp.reward);
     }
 

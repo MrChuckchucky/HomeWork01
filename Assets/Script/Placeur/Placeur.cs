@@ -37,10 +37,7 @@ public class Placeur : MonoBehaviour {
     {
         if (setDirtyItem)
         {
-            Destroy(currentItem);
-            currentItem = null;
-            timer.IsFlowing = true;
-            setDirtyItem = false;
+            DestroyItem();
         }
 
         if (placeItem)
@@ -62,6 +59,25 @@ public class Placeur : MonoBehaviour {
                 }
             }
         }
+    }
+
+    public void DestroyItem()
+    {
+        if (!currentItem)
+        {
+            return;
+        }
+        Destroy(currentItem);
+        currentItem = null;
+        timer.IsFlowing = true;
+        setDirtyItem = false;
+    }
+
+    public void End()
+    {
+        DestroyItem();
+        timer.IsFlowing = false;
+        placeItem = false;
     }
 
     public void ResetItem()
